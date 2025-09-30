@@ -1,0 +1,76 @@
+.navigator {
+  z-index: 100;
+  display: grid;
+  grid-template-columns: 40% 20% 40%;
+  grid-template-rows: 120px;
+  backdrop-filter: blur(5px);
+  span {
+    cursor: pointer;
+    @include CenterChild();
+    img {
+      height: 100%;
+      width: auto;
+    }
+  }
+
+  #LeftNav {
+    ul {
+      @include LeftNav();
+    }
+  }
+  #RightNav {
+    ul {
+      @include RightNav();
+    }
+  }
+
+  #LeftNav,
+  #RightNav {
+    width: 100%;
+    @include CenterChild();
+    ul {
+      width: 100%;
+      a {
+        position: relative;
+
+        text-decoration: none;
+        li {
+          p {
+            transition: 0.3s;
+            font-size: 1.1rem;
+            color: $color2;
+            &:hover {
+              color: $color4;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .isActiveStyle {
+    p {
+      &::after {
+        position: absolute;
+        content: "";
+        background-color: $color4;
+        height: 3px;
+        width: 100%;
+        left: 0;
+        top: 100%;
+        transform: scaleX(1);
+        animation: under 1s ease-out;
+        transform-origin: center;
+      }
+    }
+  }
+
+  @keyframes under {
+    0% {
+      transform: scaleX(0);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+}

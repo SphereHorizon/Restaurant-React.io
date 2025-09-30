@@ -1,0 +1,58 @@
+@font-face {
+  font-family: "Allura";
+  src: url(../Font/Allura-Regular.ttf);
+}
+
+@font-face {
+  font-family: "Kalam";
+  src: url(../Font/Kalam-Bold.ttf);
+}
+
+$color1: white;
+$color2: rgb(204, 199, 154);
+$color3: rgb(208, 188, 153);
+$color4: rgb(191, 200, 208);
+$color5: rgb(210, 136, 97);
+$color6: rgba(255, 255, 255, 0.625);
+$color7: rgb(21, 21, 21);
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  list-style: none;
+  font-family: "Kalam", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: $color7;
+  color: $color1;
+  &::selection {
+    background: $color6;
+    color: $color4;
+  }
+}
+
+@mixin CenterChild() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+@mixin LeftNav() {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20%;
+  align-items: center;
+  text-align: center;
+  padding-right: 20px;
+}
+@mixin RightNav() {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20%;
+  align-items: center;
+  text-align: center;
+  padding-left: 20px;
+}

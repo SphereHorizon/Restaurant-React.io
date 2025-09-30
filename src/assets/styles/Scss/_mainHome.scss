@@ -1,0 +1,16 @@
+.isActiveStyle {
+  #ing {
+    &::after {
+      position: absolute;
+      content: "";
+      background-color: $color4;
+      height: 3px;
+      width: 100%;
+      left: 0;
+      top: 100%;
+      transform: scaleX(1);
+      animation: under 1s ease-out;
+      transform-origin: center;
+    }
+  }
+}
