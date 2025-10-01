@@ -107,12 +107,11 @@ const HeaderHome = () => {
   }, []);
 
   return (
-    <div className="Header" style={{ overflowX: "hidden" }}>
+    <div
+      className="Header"
+      style={{ overflowX: "hidden", marginBottom: "100px" }}
+    >
       <Navigator></Navigator>
-
-      {/* fixed back start */}
-
-      {/* fixed back end */}
 
       {/* carrousel start */}
       <div
@@ -122,6 +121,7 @@ const HeaderHome = () => {
           overflow: "hidden",
           zIndex: 10,
           background: "rgb(21, 21, 21)",
+          marginBottom: "100px",
         }}
       >
         <AnimatePresence mode="wait">

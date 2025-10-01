@@ -5,7 +5,6 @@ const Meals = () => {
   return (
     <div>
       <Navigator></Navigator>
-      <h1>COUCOU</h1>
     </div>
   );
 };

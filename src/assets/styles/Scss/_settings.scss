@@ -26,7 +26,11 @@ $color7: rgb(21, 21, 21);
 body {
   min-height: 100vh;
   min-width: 100vw;
-  background-color: $color7;
+  background: url(../../../../public/img/restaurant2.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
   color: $color1;
   &::selection {
     background: $color6;

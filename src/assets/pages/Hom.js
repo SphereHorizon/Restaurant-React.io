@@ -1,12 +1,13 @@
 import React from "react";
 import HeaderHome from "../components/HeaderHome";
-import MainHome from "../components/MainHome";
-
+import Phoneingredient from "../components/Phoneingredient";
+import Makecommand from "../components/Makecommand";
 const Hom = () => {
   return (
     <div>
       <HeaderHome></HeaderHome>
-      <MainHome></MainHome>
+      <Makecommand></Makecommand>
+      <Phoneingredient></Phoneingredient>
     </div>
   );
 };
