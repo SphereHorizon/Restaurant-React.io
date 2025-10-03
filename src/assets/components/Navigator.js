@@ -25,11 +25,7 @@ const Navigator = () => {
   // isResize?
   const [isMobile, setisMobile] = useState(window.innerWidth < 968);
 
-  const [windowWidth, setwindowWidth] = useState();
-
   // isScrolling?
-
-  const [scroll, setscroll] = useState(0);
 
   const [isScrolling, setisScrolling] = useState();
 
@@ -51,19 +47,15 @@ const Navigator = () => {
   // resize event
   useEffect(() => {
     const handleResize = () => {
-      const width = window.innerWidth;
-      setwindowWidth(width);
-      console.log(width);
-
-      setisMobile(width < 968);
+      requestAnimationFrame(() => {
+        setisMobile(window.innerWidth < 968);
+      });
     };
 
     const scrollY = (e) => {
-      const y = window.scrollY;
-      console.log(y);
-
-      setscroll(y);
-      setisScrolling(y > 0);
+      requestAnimationFrame(() => {
+        setisScrolling(window.scrollY > 0);
+      });
     };
 
     window.addEventListener("resize", handleResize);
@@ -167,6 +159,7 @@ const Navigator = () => {
         <AnimatePresence mode="wait">
           {isImgHovering ? (
             <motion.img
+              loading="lazy"
               key={"before"}
               src="/img/Pakistan_sLogoHover.png"
               initial={{ opacity: 0 }}
@@ -177,6 +170,7 @@ const Navigator = () => {
             ></motion.img>
           ) : (
             <motion.img
+              loading="lazy"
               key={"after"}
               src="/img/Pakistan'sLogoRemove.png"
               alt=""
@@ -192,49 +186,55 @@ const Navigator = () => {
   };
 
   return (
-    <div
-      className="navigator"
-      style={{
-        transition: "0.2s",
-        position: "fixed",
-        width: "100%",
-        bottom: isMobile ? "0" : "auto",
-        backdropFilter: isScrolling ? "blur(6px)" : "none",
-        background: isScrolling ? "rgba(0, 0, 0, 0.3" : "",
-      }}
-    >
-      <div id="LeftNav">
-        <ul>
-          {Left.map((link, index) => (
-            <NavLink
-              key={index}
-              id={link[0]}
-              to={link[1]}
-              className={(navlink) => (navlink.isActive ? "isActiveStyle" : "")}
-            >
-              {HoverTranstion(link[2], link[3], link[4], link[5], link[0])}
-            </NavLink>
-          ))}
-        </ul>
-      </div>
+    <AnimatePresence>
+      <motion.div
+        className="navigator"
+        style={{
+          transition: "0.2s",
+          position: "fixed",
+          width: "100%",
+          bottom: isMobile ? "0" : "auto",
+          backdropFilter: isScrolling ? "blur(6px)" : "none",
+          background: isScrolling ? "rgba(0, 0, 0, 0.3" : "",
+        }}
+      >
+        <div id="LeftNav">
+          <ul>
+            {Left.map((link, index) => (
+              <NavLink
+                key={index}
+                id={link[0]}
+                to={link[1]}
+                className={(navlink) =>
+                  navlink.isActive ? "isActiveStyle" : ""
+                }
+              >
+                {HoverTranstion(link[2], link[3], link[4], link[5], link[0])}
+              </NavLink>
+            ))}
+          </ul>
+        </div>
 
-      {ImgHover()}
+        {ImgHover()}
 
-      <div id="RightNav">
-        <ul>
-          {Right.map((link, index) => (
-            <NavLink
-              key={index}
-              id={link[0]}
-              to={link[1]}
-              className={(navlink) => (navlink.isActive ? "isActiveStyle" : "")}
-            >
-              {HoverTranstion(link[2], link[3], link[4], link[5], link[0])}
-            </NavLink>
-          ))}
-        </ul>
-      </div>
-    </div>
+        <div id="RightNav">
+          <ul>
+            {Right.map((link, index) => (
+              <NavLink
+                key={index}
+                id={link[0]}
+                to={link[1]}
+                className={(navlink) =>
+                  navlink.isActive ? "isActiveStyle" : ""
+                }
+              >
+                {HoverTranstion(link[2], link[3], link[4], link[5], link[0])}
+              </NavLink>
+            ))}
+          </ul>
+        </div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

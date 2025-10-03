@@ -6,6 +6,10 @@ import { title } from "framer-motion/client";
 const HeaderHome = () => {
   const [radionum, setradionum] = useState("radio1");
 
+  const [IsCarrouselInView, setIsCarrouselInView] = useState(
+    window.innerHeight < 471
+  );
+
   const [Dish, setDish] = useState(null);
   const resetDish = () => setDish(null);
 
@@ -13,14 +17,25 @@ const HeaderHome = () => {
 
   useEffect(() => {
     const handleResize = (e) => {
-      const width = window.innerWidth;
-      setisMobile(width < 968);
-      console.log(isMobile);
+      requestAnimationFrame(() => {
+        // BEST PRACTICE
+        setisMobile(window.innerWidth < 968);
+      });
+    };
+
+    const view = (e) => {
+      requestAnimationFrame(() => {
+        setIsCarrouselInView(window.innerHeight > 471);
+      });
     };
 
     window.addEventListener("resize", handleResize);
+    window.addEventListener("scroll", view);
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", view);
+    };
   }, []);
 
   const radioBackground = [
@@ -114,86 +129,89 @@ const HeaderHome = () => {
       <Navigator></Navigator>
 
       {/* carrousel start */}
-      <div
-        id="carroussel"
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          zIndex: 10,
-          background: "rgb(21, 21, 21)",
-          marginBottom: "100px",
-        }}
-      >
-        <AnimatePresence mode="wait">
-          {radioBackground.map(
-            (element) =>
-              element.Id === radionum && (
-                <motion.div
-                  key={element.Id}
-                  initial={{ opacity: 0, transform: "translate(100vw)" }}
-                  animate={{ opacity: 1, transform: "translate(0px, 0px)" }}
-                  exit={{ opacity: 0, transform: "translateX(-100vw)" }}
-                  transition={{ duration: 0.4 }}
-                  style={{
-                    background: `url(${element.img})`,
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "cover",
-                    width: "100vw",
-                    height: "100vh",
-                  }}
-                ></motion.div>
-              )
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          <motion.div
-            layout
-            id="container"
-            style={{
-              position: "absolute",
-              transform: "translate(-50%, -50%)",
-              top: "50%",
-            }}
-            animate={{
-              left:
-                radionum === "radio1" && !isMobile
-                  ? "23%"
-                  : radionum === "radio3" && !isMobile
-                  ? "73%"
-                  : "50%",
-            }}
-            transition={{ duration: 0.4 }}
-          >
-            <motion.ul id="title">
-              <li>
-                <p style={{ fontSize: "1.4rem" }}>Take your flight to</p>
-              </li>
-              <li>
-                <h1>Food World</h1>
-              </li>
-            </motion.ul>
-
-            <motion.ul id="radio">
-              {radioBackground.map((element, index) => (
-                <li key={index}>
-                  <input
-                    type="radio"
-                    className="radioBtn"
-                    name="radio-btn"
-                    id={element.Id}
-                    onChange={(e) => {
-                      setradionum(e.target.id);
+      <AnimatePresence>
+        <motion.div
+          id="carroussel"
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            zIndex: 10,
+            background: "rgb(21, 21, 21)",
+            marginBottom: "100px",
+          }}
+        >
+          <AnimatePresence mode="wait">
+            {radioBackground.map(
+              (element) =>
+                element.Id === radionum && (
+                  <motion.div
+                    viw
+                    key={element.Id}
+                    initial={{ opacity: 0, transform: "translate(100vw)" }}
+                    animate={{ opacity: 1, transform: "translate(0px, 0px)" }}
+                    exit={{ opacity: 0, transform: "translateX(-100vw)" }}
+                    transition={{ duration: 0.4 }}
+                    style={{
+                      background: `url(${element.img})`,
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                      backgroundSize: "cover",
+                      width: "100vw",
+                      height: "100vh",
                     }}
-                    checked={radionum === element.Id}
-                  />
+                  ></motion.div>
+                )
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            <motion.div
+              layout
+              id="container"
+              style={{
+                position: "absolute",
+                transform: "translate(-50%, -50%)",
+                top: "50%",
+              }}
+              animate={{
+                left:
+                  radionum === "radio1" && !isMobile
+                    ? "23%"
+                    : radionum === "radio3" && !isMobile
+                    ? "73%"
+                    : "50%",
+              }}
+              transition={{ duration: 0.4 }}
+            >
+              <motion.ul id="title">
+                <li>
+                  <p style={{ fontSize: "1.4rem" }}>Take your flight to</p>
                 </li>
-              ))}
-            </motion.ul>
-          </motion.div>
-        </AnimatePresence>
-      </div>
+                <li>
+                  <h1>Food World</h1>
+                </li>
+              </motion.ul>
+
+              <motion.ul id="radio">
+                {radioBackground.map((element, index) => (
+                  <li key={index}>
+                    <input
+                      type="radio"
+                      className="radioBtn"
+                      name="radio-btn"
+                      id={element.Id}
+                      onChange={(e) => {
+                        setradionum(e.target.id);
+                      }}
+                      checked={radionum === element.Id}
+                    />
+                  </li>
+                ))}
+              </motion.ul>
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
+      </AnimatePresence>
       {/* carrousel end */}
 
       {/* meals part start */}
@@ -296,6 +314,7 @@ const HeaderHome = () => {
                 transition={{ duration: 0.4 }}
               >
                 <motion.img
+                  loading="lazy"
                   style={{
                     width: "100%",
                     height: "100%",
@@ -330,87 +349,3 @@ const HeaderHome = () => {
 };
 
 export default HeaderHome;
-
-//  <motion.div
-//           layout
-//           className="mealPart"
-//           style={{
-//             marginTop: "7%",
-//             flexWrap: "wrap",
-//             display: "flex",
-//             alignItems: "center",
-//             justifyContent: "center",
-//           }}
-//         >
-//           {meals.map((meal, index) => (
-//             <motion.ul
-//               onClick={(e) => setclickDish(index)}
-//               layout
-//               id="img"
-//               key={index}
-//               style={{
-//                 // // full screen when click
-
-//                 overflow: clickDish === index ? "hidden" : "initial",
-//                 zIndex: clickDish === index ? 100 : "initial",
-//                 position: clickDish === index ? "fixed" : "static",
-//                 display: clickDish === index ? "grid" : "flex",
-//                 flexWrap: clickDish === index ? "nowrap" : "wrap",
-//                 flex: clickDish === index ? "initial" : "0 1 300px",
-//                 gridTemplateColumns: clickDish === index ? "1fr" : "initial",
-//                 gridTemplateRows: clickDish === index ? "70% 30%" : "initial",
-//                 // alignItems: clickDish === index ? "center" : "initial",
-//                 justifyContent: clickDish === index ? "center" : "initial",
-//                 gap: clickDish === index ? "10px" : "initial",
-//                 width: clickDish === index ? "auto" : "initial",
-//                 height: clickDish === index ? "100%" : "initial",
-//                 top: clickDish === index ? "50%" : "initial",
-//                 left: clickDish === index ? "50%" : "initial",
-//                 transform:
-//                   clickDish === index ? "translate(-50%, -50%)" : "initial",
-//                 // translate:
-//                 //   clickDish === index ? "translate(-50%, -50%)" : "initial",
-//                 margin: clickDish === index ? "0" : "10px",
-//                 borderRadius: clickDish === index ? "40px" : "1200px",
-//                 background:
-//                   clickDish === index ? "rgba(51, 51, 51, 0.34)" : "initial",
-//                 backdropFilter: clickDish === index ? "blur(3px)" : "initial",
-//                 textAlign: "center",
-//                 transition: "0.3s",
-//               }}
-//             >
-//               <li>
-//                 <img
-//                   src={meal.img}
-//                   alt=""
-//                   style={{
-//                     // borderRadius: "15px",
-//                     // width: "100%",
-//                     // maxWidth: "700px",
-//                     // height: "auto",
-//                     cursor: "pointer",
-//                     borderRadius: "20px",
-//                     width: clickDish === index ? "70%" : "40%",
-//                     height: clickDish === index ? "100%" : "auto",
-//                     maxWidth: clickDish === index ? "initial" : "600px",
-//                     minWidth: clickDish === index ? "initial" : "300px",
-//                   }}
-//                 />
-//               </li>
-//               {/* full screen */}
-//               <li
-//                 style={{
-//                   background: clickDish === index ? "rgb(11,16,17)" : "initial",
-//                   padding: clickDish === index ? "10px" : "0",
-//                   width: clickDish === index ? "100%" : "initial",
-//                   height: clickDish === index ? "100%" : "initial",
-//                 }}
-//               >
-//                 <h3 style={{ color: "rgb(210, 136, 97)" }}>
-//                   Title : {meal.name}
-//                 </h3>
-//                 {clickDish === index && <p>ingredients : {meal.compos}</p>}
-//               </li>
-//             </motion.ul>
-//           ))}
-//         </motion.div>

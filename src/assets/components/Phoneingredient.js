@@ -73,8 +73,8 @@ const Phoneingredient = () => {
           {/* array start */}
 
           <motion.ul
-            initial={{ opacity: 0, transform: "scale(0)" }}
-            whileInView={{ opacity: 1, transform: "scale(1)" }}
+            initial={{ opacity: 0, transform: "translateY(200px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
             transition={{ duration: 2 }}
             style={{
               display: "flex",
